@@ -4,7 +4,7 @@ use strict;
 
 use vars qw($VERSION);
 
-($VERSION) = 0.02;
+($VERSION) = 0.51;
 
 # here's the kind of Perl -> SQL that's happening here
 
@@ -48,12 +48,16 @@ sub freeze {
 sub _time_to_iso8601 {
 	my $time = shift || return undef;
 	require Date::Calc;
-	import  Date::Calc (qw/Time_to_Date/);
+	import  Date::Calc (qw/Localtime/);
+#	import  Date::Calc (qw/Time_to_Date/);
+    
+    my ($y,$M,$d,$h,$m,$s) = Localtime($time);
+#	my ($y,$M,$d,$h,$m,$s) = Time_to_Date($time);
 
-	my ($y,$M,$d,$h,$m,$s) = Time_to_Date($time);
-
-	# Looks like the Epoch. Usually indicates a bad date, so return undef;
-	if (($y == 1970) && ($M == 1) && ($d == 1)) {
+	# Sometimes bad dates return answers near the Epoch.
+    # Since this is a session handling module, sessions
+    # should never have dates over 30 years in the past... 
+	if ($y <= 1970 ) {
 		return undef;
 	}
 	else {
@@ -75,7 +79,7 @@ sub thaw {
 		_SESSION_ID 			=> $data->{session_id},
 		_SESSION_CTIME  		=> $data->{creation_time},    # Times from DB should be in Epoch fmt already
 		_SESSION_ATIME  		=> $data->{last_access_time},
-		_SESSION_ETIME  		=> $data->{duration},
+		_SESSION_ETIME  		=> $data->{end_time},
 		_SESSION_REMOTE_ADDR	=> $data->{remote_addr},
 	);
 	for (keys %$data) {
@@ -85,7 +89,7 @@ sub thaw {
 	}
 
 	# pass the rest through unchanged
-	for (grep {!/^(session_id|creation_time|last_access_time|duration|remote_addr)$|_exp_secs$/} keys %$data) {
+	for (grep {!/^(session_id|creation_time|last_access_time|end_time|remote_addr)$|_exp_secs$/} keys %$data) {
 		$out{$_} = $data->{$_};
 	}
 

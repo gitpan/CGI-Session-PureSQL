@@ -12,7 +12,7 @@ use base qw(
 
 use vars qw($VERSION $TABLE_NAME @ISA);
 
-$VERSION = '0.30';
+$VERSION = '0.51';
 $TABLE_NAME = 'sessions';
 
 sub store {
@@ -104,7 +104,7 @@ sub retrieve {
     		' SELECT  *
 				, '.$epoch_func->('creation_time')   			.' as creation_time
 				, '.$epoch_func->('last_access_time')			.' as last_access_time
-				, '.$epoch_func->("last_access_time + duration").'     as end_time
+				, '.$epoch_func->("last_access_time + duration").'as end_time
 			  FROM '.$TABLE_NAME.
 			' WHERE session_id = '.$dbh->quote($sid)
 	    );
@@ -139,6 +139,8 @@ sub remove {
 	else {
 		return 1;
 	}
+
+    die "testing!";
     
 }
 
@@ -281,6 +283,12 @@ Copyright (C) 2003 Mark Stosberg All rights reserved.
 This library is free software and can be modified and distributed under the same
 terms as Perl itself. 
 
+=head1 CONTRIBUTING
+
+Patches, questions and feedback are welcome. I maintain CGI::Session::PureSQL using
+darcs, a CVS alterantive ( http://www.darcs.net/ ). My darcs archive is here:
+http://mark.stosberg.com/darcs_hive/puresql
+
 =head1 AUTHOR
 
 Mark Stosberg <mark@summersault.com>
@@ -316,5 +324,6 @@ L<Apache::Session|Apache::Session> - another fine alternative to CGI::Session
 =back
 
 =cut
+
 
 

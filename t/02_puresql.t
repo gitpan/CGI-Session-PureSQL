@@ -6,7 +6,7 @@ BEGIN {
 
 	if (defined $ENV{DBI_DSN}) {
 		require DBI;
-		plan tests => 18;
+		plan tests => 21;
 	} else {
 		plan skip_all => 'cannot test PureSQL without DB info';
 	}
@@ -40,6 +40,8 @@ eval {
 };
 ok(!$@, 'created session table for testing');
 
+#DBI->trace(1);
+
 $ENV{REMOTE_ADDR} = '127.0.0.1';
 
 # Test for default table name of 'sessions'
@@ -67,21 +69,35 @@ ok(!$s->expire(), 'expecting expire to return undef when no expire date was set'
 $s->expire("+10m");
 
 
-ok($s->expire(), 'expire() expected to return date' );
+is($s->expire(), 600, "expire() expected to return time in seconds");
 
 $s->expire('order_id'=>'+10m');
 
 my $sid = $s->id();
 
+# save creation time to compare it later. 
+my $ctime_from_first_session = $s->ctime;
+
 ok($s->close, 'closing 1st session');
 
+is($sid,$dbh->selectrow_array("SELECT session_id FROM cgises_test WHERE session_id = ?",{},$sid),
+    "found row for closed session. (sid was: $sid)");    
+
+#DBI->trace(1);
 my $s2;
 eval { $s2 = CGI::Session::PureSQL->new($sid, {Handle=>$dbh,TableName=>'cgises_test'}) };
 ok($s2, 'created second test session');
+DBI->trace(0);
+
+is($sid,$dbh->selectrow_array("SELECT session_id FROM cgises_test WHERE session_id = ?",{},$sid),
+    "found row (again) for closed session. (sid was: $sid)");    
 
 is($s2->id(),$sid, 'checking session identity');
 
 is($s2->param('order_id'),'127','checking ability to retrieve session data');
+
+my $ctime_from_second_session = $s2->ctime;
+is($ctime_from_first_session,$ctime_from_second_session, 'creation time remains the same');
 
 eval { $s2->delete(); };
 ok(!$@, 'delete() survives');

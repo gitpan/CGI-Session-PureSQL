@@ -77,6 +77,12 @@ COPYRIGHT
     This library is free software and can be modified and distributed under
     the same terms as Perl itself.
 
+CONTRIBUTING
+    Patches, questions and feedback are welcome. I maintain
+    CGI::Session::PureSQL using darcs, a CVS alterantive (
+    http://www.darcs.net/ ). My darcs archive is here:
+    http://mark.stosberg.com/darcs_hive/puresql
+
 AUTHOR
     Mark Stosberg <mark@summersault.com>
 
