@@ -73,7 +73,7 @@ sub  _compute_local_time_from_indiana_time {
    my $local_hour = (Now(0))[0];
    my $gmt_hour = (Now(1))[0];
 
-    my $gmt_minus_localtime = ($gmt_hour - $local_hour) % 24;
+    my $gmt_minus_localtime = $gmt_hour - $local_hour;
 
     my $diff_from_indiana = $gmt_minus_indiana_time - $gmt_minus_localtime;
 
