@@ -10,14 +10,15 @@ use base qw(
 
 # Load neccessary libraries below
 
-use vars qw($VERSION $TABLE_NAME);
+use vars qw($VERSION $TABLE_NAME @ISA);
 
-$VERSION = '0.22_01';
+$VERSION = '0.23_01';
 $TABLE_NAME = 'sessions';
 
 sub store {
     my ($self, $sid, $options, $data) = @_;
 	my $dbh = $self->PureSQL_dbh($options);
+
 
 	my $session_exists;
 	eval {
@@ -30,6 +31,14 @@ sub store {
 		$self->error("Couldn't acquire data on id '$sid'");
 		return undef;
 	}
+
+    # Force the serializer to be SQLAbstract
+    @ISA = qw(
+        CGI::Session
+        CGI::Session::ID::MD5
+        CGI::Session::Serialize::SQLAbstract
+        );
+
 
 	eval { require SQL::Abstract; }; 
 	if ($@) {
@@ -48,8 +57,10 @@ sub store {
 			$dbh->do($stmt,{},@bind);
 		} 
 		else {
+            my $results = $self->freeze($data) ;
 			my($stmt, @bind) = $sa->insert(
 					$TABLE_NAME, $self->freeze($data)  );
+
 			$dbh->do($stmt,{},@bind);
 
 		}
@@ -102,6 +113,14 @@ sub retrieve {
         $self->error("Couldn't acquire data on id '$sid'");
         return undef;
     }
+
+    # Force the serializer to be SQLAbstract
+    @ISA = qw(
+        CGI::Session
+        CGI::Session::ID::MD5
+        CGI::Session::Serialize::SQLAbstract
+        );
+    
     return $self->thaw($data);
 }
 
@@ -183,7 +202,7 @@ sub PureSQL_dbh {
 
 =head1 NAME
 
-CGI::Session::PureSQL- Pure SQL  driver with no embedded Perl stored in the database
+CGI::Session::PureSQL - Pure SQL driver with no embedded Perl stored in the database
 
 =head1 SYNOPSIS
     
@@ -212,6 +231,9 @@ store, and each field will have just one value: You can't store arbitrary data
 like you can with the CGI::Session::PostgreSQL driver. However, you may already be in
 the habit of writing applications which use standard SQL structures, so this
 may not be much of a drawback. :) 
+
+It currently requires the SQLAbstract serializer to work, which is included in
+the distribution. If you specify another serializer it will be ignored. 
 
 =head1 STORAGE
 
@@ -294,4 +316,5 @@ L<Apache::Session|Apache::Session> - another fine alternative to CGI::Session
 =back
 
 =cut
+
 

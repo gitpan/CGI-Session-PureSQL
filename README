@@ -1,5 +1,5 @@
 NAME
-    CGI::Session::PureSQL- Pure SQL driver with no embedded Perl stored in
+    CGI::Session::PureSQL - Pure SQL driver with no embedded Perl stored in
     the database
 
 SYNOPSIS
@@ -27,6 +27,10 @@ DESCRIPTION
     arbitrary data like you can with the CGI::Session::PostgreSQL driver.
     However, you may already be in the habit of writing applications which
     use standard SQL structures, so this may not be much of a drawback. :)
+
+    It currently requires the SQLAbstract serializer to work, which is
+    included in the distribution. If you specify another serializer it will
+    be ignored.
 
 STORAGE
     To store session data in SQL database, you first need to create a

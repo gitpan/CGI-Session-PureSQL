@@ -1,5 +1,9 @@
 Revision history for Perl module CGI::Session::PureSQL
 
+0.23_01 Tues Oct 28 2003
+    [BUG FIXES]
+    - Force the serializer to be SQLAbstract, which is the only choice known to work
+
 0.22_01 Mon Oct 27 2003
     [BUG FIXES]
     - Fixed table name defaulting to 'sessions'. New test added for this case.
