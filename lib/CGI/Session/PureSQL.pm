@@ -12,7 +12,8 @@ use base qw(
 
 use vars qw($VERSION $TABLE_NAME);
 
-$VERSION = '0.21_02';
+$VERSION = '0.22_01';
+$TABLE_NAME = 'sessions';
 
 sub store {
     my ($self, $sid, $options, $data) = @_;

@@ -1,5 +1,9 @@
 Revision history for Perl module CGI::Session::PureSQL
 
+0.22_01 Mon Oct 27 2003
+    [BUG FIXES]
+    - Fixed table name defaulting to 'sessions'. New test added for this case.
+
 0.21_01 Sun Sep 14 20:32:41 2003
 	- Updated with suggestions with from Markus and prepared for CPAN
 

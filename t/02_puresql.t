@@ -6,7 +6,7 @@ BEGIN {
 
 	if (defined $ENV{DBI_DSN}) {
 		require DBI;
-		plan tests => 16;
+		plan tests => 18;
 	} else {
 		plan skip_all => 'cannot test PureSQL without DB info';
 	}
@@ -42,7 +42,16 @@ ok(!$@, 'created session table for testing');
 
 $ENV{REMOTE_ADDR} = '127.0.0.1';
 
+# Test for default table name of 'sessions'
 my $s;
+eval { $s = CGI::Session::PureSQL->new(undef, {Handle=>$dbh}) };
+ok (!$@, 'new() survives without TableName') or diag $@;
+
+is ($CGI::Session::PureSQL::TABLE_NAME, 'sessions', 'session table name defaults to sessions');
+
+# A warning will produced by the test about now. That's expected. -mls 10/27/03 
+
+eval { $s = undef; };
 
 eval { $s = CGI::Session::PureSQL->new(undef, {Handle=>$dbh,TableName=>'cgises_test'}) };
 ok (!$@, 'new() survives') or diag $@;
