@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name: CGI-Session-PureSQL
-version: 0.51
+version: 0.52
 license: perl
 distribution_type: module
 requires:
@@ -13,7 +13,7 @@ conflicts: {}
 provides:
   CGI::Session::PureSQL:
     file: lib/CGI/Session/PureSQL.pm
-    version: 0.51
+    version: 0.52
   CGI::Session::Serialize::SQLAbstract:
     file: lib/CGI/Session/Serialize/SQLAbstract.pm
     version: 0.51

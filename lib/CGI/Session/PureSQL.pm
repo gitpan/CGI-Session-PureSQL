@@ -12,7 +12,7 @@ use base qw(
 
 use vars qw($VERSION $TABLE_NAME @ISA);
 
-$VERSION = '0.51';
+$VERSION = '0.52';
 $TABLE_NAME = 'sessions';
 
 sub store {
@@ -286,7 +286,7 @@ terms as Perl itself.
 =head1 CONTRIBUTING
 
 Patches, questions and feedback are welcome. I maintain CGI::Session::PureSQL using
-darcs, a CVS alterantive ( http://www.darcs.net/ ). My darcs archive is here:
+darcs, a CVS alternative ( http://www.darcs.net/ ). My darcs archive is here:
 http://mark.stosberg.com/darcs_hive/puresql
 
 =head1 AUTHOR

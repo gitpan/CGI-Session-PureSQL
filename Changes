@@ -1,5 +1,10 @@
 Revision history for Perl module CGI::Session::PureSQL
 
+0.52 Sun Dec  5 17:54:31 EST 2004
+    - No code changes.
+    - A potential fix was added some some tests that failed if they were run
+      in a time zone different than my own...
+
 0.51 Sun Oct 31 16:20:41 EST 2004
     - Bug fix: Fixed bug that caused creation times to creep forward,  
       due to a "local time" versus "GMT" bug. New tests added for this 

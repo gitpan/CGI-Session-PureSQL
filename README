@@ -79,7 +79,7 @@ COPYRIGHT
 
 CONTRIBUTING
     Patches, questions and feedback are welcome. I maintain
-    CGI::Session::PureSQL using darcs, a CVS alterantive (
+    CGI::Session::PureSQL using darcs, a CVS alternative (
     http://www.darcs.net/ ). My darcs archive is here:
     http://mark.stosberg.com/darcs_hive/puresql
 
