@@ -1,5 +1,8 @@
 Revision history for Perl module CGI::Session::PureSQL
 
+0.30 Tues Feb 10 2003
+    - No code changes. Simply declaring 'stable enough' to not be a developer release anymore.
+
 0.23_01 Tues Oct 28 2003
     [BUG FIXES]
     - Force the serializer to be SQLAbstract, which is the only choice known to work

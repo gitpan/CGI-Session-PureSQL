@@ -12,7 +12,7 @@ use base qw(
 
 use vars qw($VERSION $TABLE_NAME @ISA);
 
-$VERSION = '0.23_01';
+$VERSION = '0.30';
 $TABLE_NAME = 'sessions';
 
 sub store {
