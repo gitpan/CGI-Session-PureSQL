@@ -1,0 +1,11 @@
+MANIFEST
+LICENSE
+README
+Changes
+lib/CGI/Session/PureSQL.pm
+lib/CGI/Session/Serialize/SQLAbstract.pm
+t/02_puresql.t
+t/01_serialize_sql_abstract.t
+Build.PL
+Makefile.PL
+META.yml

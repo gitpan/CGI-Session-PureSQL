@@ -1,0 +1,9 @@
+Revision history for Perl module CGI::Session::PureSQL
+
+0.21_01 Sun Sep 14 20:32:41 2003
+	- Updated with suggestions with from Markus and prepared for CPAN
+
+0.01 Sun Aug 24 19:56:48 2003
+	- original version; created by ExtUtils::ModuleMaker 0.32
+
+
