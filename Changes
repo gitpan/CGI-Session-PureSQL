@@ -1,5 +1,13 @@
 Revision history for Perl module CGI::Session::PureSQL
 
+0.54 Wed Apr 27 16:39:19 EST 2005
+  [BUG FIXES]  
+  * The 'duration' field wasn't being populated.
+
+  [INTERNALS]
+  * Test updates to work with the date syntax of PostgreSQL 8.0 as well as 7.1
+  * Some more tests
+
 0.53  Sun Dec 19 17:19:20 EST 2004
     - No code changes.
     - A potential fix was added some some tests that failed if they were run
@@ -34,4 +42,4 @@ Revision history for Perl module CGI::Session::PureSQL
 0.01 Sun Aug 24 19:56:48 2003
 	- original version; created by ExtUtils::ModuleMaker 0.32
 
-
+vim:ft=changelog

@@ -6,7 +6,7 @@ BEGIN {
 
 	if (defined $ENV{DBI_DSN}) {
 		require DBI;
-		plan tests => 21;
+		plan tests => 23;
 	} else {
 		plan skip_all => 'cannot test PureSQL without DB info';
 	}
@@ -83,16 +83,34 @@ ok($s->close, 'closing 1st session');
 is($sid,$dbh->selectrow_array("SELECT session_id FROM cgises_test WHERE session_id = ?",{},$sid),
     "found row for closed session. (sid was: $sid)");    
 
-#DBI->trace(1);
 my $s2;
 eval { $s2 = CGI::Session::PureSQL->new($sid, {Handle=>$dbh,TableName=>'cgises_test'}) };
 ok($s2, 'created second test session');
-DBI->trace(0);
 
-is($sid,$dbh->selectrow_array("SELECT session_id FROM cgises_test WHERE session_id = ?",{},$sid),
-    "found row (again) for closed session. (sid was: $sid)");    
+my ($sid_in_db,$duration) = $dbh->selectrow_array("SELECT session_id,duration FROM cgises_test WHERE session_id = ?",{},$sid);
+is($sid_in_db,$sid, "found row for closed session. (sid was: $sid)");
+
+# The REs groks newer and older PostgreSQL date formatting. 
+like($duration, qr/00:10(:00)?/, "expiration time is represented in the database.");
 
 is($s2->id(),$sid, 'checking session identity');
+
+###
+{
+    my $test = 'setting expiration date in an UPDATE statement works';
+
+    $s->expire("+20m");
+
+    # XXX Hack. work around bug in CGI::Session 3.95
+    $s->{_STATUS} = CGI::Session::MODIFIED;
+    $s->flush();
+
+    my ($duration) = $dbh->selectrow_array("SELECT duration FROM cgises_test WHERE session_id = ?",{},$sid);
+    like($duration, qr/00:20(:00)?/, "expiration time is represented in the database.");
+}
+
+###
+
 
 is($s2->param('order_id'),'127','checking ability to retrieve session data');
 

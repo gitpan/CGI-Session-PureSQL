@@ -4,7 +4,7 @@ use strict;
 
 use vars qw($VERSION);
 
-($VERSION) = 0.51;
+($VERSION) = 0.54;
 
 # here's the kind of Perl -> SQL that's happening here
 
@@ -36,7 +36,7 @@ sub freeze {
 	}
 
 	# pass the rest through unchanged
-	for (grep {!/^_SESSION/} keys %$data) {
+	for (grep {!/^_SESSION|^(session_id|creation_time|last_access_time|duration|remote_addr)$/} keys %$data) {
 		$sql{$_} = $data->{$_};
 	}
 
@@ -71,6 +71,11 @@ sub _time_to_iso8601 {
 
 
 # convert from the database format back to CGI::Session format
+
+# "duration" may be passed in, even through we don't use it. It's formatted in PostgresSQL interval style
+# "end_time" represents the same thing, formatted in seconds.
+# It would be reasonable to refactor elsewhere so 'duration' isn't passed in.
+
 sub thaw {
 	my ($self,$data) = @_;
 	return undef unless ref $data;
@@ -89,7 +94,7 @@ sub thaw {
 	}
 
 	# pass the rest through unchanged
-	for (grep {!/^(session_id|creation_time|last_access_time|end_time|remote_addr)$|_exp_secs$/} keys %$data) {
+	for (grep {!/^(session_id|creation_time|last_access_time|duration|end_time|remote_addr)$|_exp_secs$/} keys %$data) {
 		$out{$_} = $data->{$_};
 	}
 

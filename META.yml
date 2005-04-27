@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name: CGI-Session-PureSQL
-version: 0.53
+version: 0.54
 author:
   - Mark Stosberg <mark@summersault.com>
 abstract: |-
@@ -13,8 +13,8 @@ requires:
 provides:
   CGI::Session::PureSQL:
     file: lib/CGI/Session/PureSQL.pm
-    version: 0.53
+    version: 0.54
   CGI::Session::Serialize::SQLAbstract:
     file: lib/CGI/Session/Serialize/SQLAbstract.pm
-    version: 0.51
+    version: 0.54
 generated_by: Module::Build version 0.2606

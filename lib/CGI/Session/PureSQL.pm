@@ -12,7 +12,7 @@ use base qw(
 
 use vars qw($VERSION $TABLE_NAME @ISA);
 
-$VERSION = '0.53';
+$VERSION = '0.54';
 $TABLE_NAME = 'sessions';
 
 sub store {
@@ -57,7 +57,6 @@ sub store {
 			$dbh->do($stmt,{},@bind);
 		} 
 		else {
-            my $results = $self->freeze($data) ;
 			my($stmt, @bind) = $sa->insert(
 					$TABLE_NAME, $self->freeze($data)  );
 
